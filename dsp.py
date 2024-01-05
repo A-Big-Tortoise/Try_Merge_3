@@ -12,8 +12,11 @@ import pandas as pd
 from Dataset import load_scg
 import os
 
-def load_demo(noise_level=0, signal_idx=0):
+def add_change():
+    """Here is a change!"""
+    return -1
 
+def load_demo(noise_level=0, signal_idx=0)
     signals_clean, labels_clean, duration, fs = load_scg(noise_level, 'train')
     signal = signals_clean[signal_idx]
     sampling_rate = fs

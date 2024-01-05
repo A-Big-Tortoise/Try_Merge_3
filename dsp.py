@@ -3046,6 +3046,31 @@ def cal_autocorr(signal, plot=False):
 
 
 
+def cwt(data, sampling_rate, wavename, totalscal=256):
+    """
+    Description:
+        Perform Continuous Wavelet Transform (CWT) on a given signal.
+
+    Parameters:
+        data (numpy.ndarray): Input signal.
+        sampling_rate (float): Sampling rate of the signal.
+        wavename (str): Name of the wavelet function to use.
+        totalscal (int, optional): Length of the scale sequence for wavelet transform (default is 256).
+
+    Returns:
+        cwtmatr (numpy.ndarray): The CWT matrix representing the wavelet transform of the input signal.
+        frequencies (numpy.ndarray): The frequencies corresponding to the CWT matrix rows.
+    """
+
+    fc = pywt.central_frequency(wavename)
+    cparam = 2 * fc * totalscal
+    scales = cparam / np.arange(totalscal, 1, -1)
+
+    cwtmatr, frequencies = pywt.cwt(data, scales, wavename, 1.0 / sampling_rate)
+
+    return cwtmatr, frequencies
+
+
 
 
 
@@ -3476,28 +3501,4 @@ def build_fft(input_signal, filter_coefficients, threshold_windows=6, boundary=0
 #         pct_result[i] = np.sum(signal * chirplet_function)
 #
 #     return np.abs(pct_result)  # 提取振幅信息
-
-def cwt(data, sampling_rate, wavename, totalscal=256):
-    """
-    Description:
-        Perform Continuous Wavelet Transform (CWT) on a given signal.
-
-    Parameters:
-        data (numpy.ndarray): Input signal.
-        sampling_rate (float): Sampling rate of the signal.
-        wavename (str): Name of the wavelet function to use.
-        totalscal (int, optional): Length of the scale sequence for wavelet transform (default is 256).
-
-    Returns:
-        cwtmatr (numpy.ndarray): The CWT matrix representing the wavelet transform of the input signal.
-        frequencies (numpy.ndarray): The frequencies corresponding to the CWT matrix rows.
-    """
-
-    fc = pywt.central_frequency(wavename)
-    cparam = 2 * fc * totalscal
-    scales = cparam / np.arange(totalscal, 1, -1)
-
-    cwtmatr, frequencies = pywt.cwt(data, scales, wavename, 1.0 / sampling_rate)
-
-    return cwtmatr, frequencies
 
